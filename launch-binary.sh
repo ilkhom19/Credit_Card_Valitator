@@ -5,7 +5,7 @@ set -e
 # Repository details
 REPO="ilkhom19/Credit_Card_Valitator"
 INSTALL_DIR="/usr/local/bin"
-BINARY_NAME="io-net-launcher"
+BINARY_NAME="your_binary_name"
 BINARY_PATH="$INSTALL_DIR/$BINARY_NAME"
 
 # Function to get the local binary version
@@ -23,7 +23,7 @@ get_latest_version() {
   curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
 }
 
-# Function to download the latest binary based on system architecture
+# Function to download the latest binary
 download_binary() {
   case "$(uname -sm)" in
     "Darwin arm64") FILENAME="$BINARY_NAME-macOS-arm64" ;;
@@ -46,26 +46,20 @@ download_binary() {
   echo "$BINARY_NAME version $1 is successfully installed"
 }
 
-# Always remove the existing binary before checking for updates
-if [ -f "$BINARY_PATH" ]; then
-  echo "Removing existing binary..."
-  sudo rm "$BINARY_PATH" || {
-    echo "Failed to remove existing binary; please check your permissions or try manually" >&2
-    exit 1
-  }
-fi
-
 # Check existing version and update if not the latest
 local_version=$(get_local_version)
 latest_version=$(get_latest_version)
 
 if [ "$local_version" != "$latest_version" ]; then
   echo "Local version ($local_version) is different from the latest version ($latest_version). Updating..."
+  if [ -f "$BINARY_PATH" ]; then
+    echo "Existing binary found. Deleting..."
+    rm "$BINARY_PATH" || {
+      echo "Failed to remove existing binary; please check your permissions or try manually" >&2
+      exit 1
+    }
+  fi
   download_binary "$latest_version"
 else
   echo "No update needed. Local version ($local_version) is up-to-date."
 fi
-
-# Execute the binary with the provided flags and options
-echo "Executing $BINARY_PATH with arguments $@"
-"$BINARY_PATH" "$@"
