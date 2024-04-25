@@ -30,9 +30,14 @@ BINARY_LOCAL_PATH="/usr/local/bin/$BINARY_NAME"
 # Use curl to download the binary
 curl -L $BINARY_URL -o $BINARY_LOCAL_PATH
 
-# Check the content of the downloaded file
+# Check if the download was successful by inspecting the first few bytes of the file
+echo "File type and content check:"
+file $BINARY_LOCAL_PATH
+head $BINARY_LOCAL_PATH
+
+# Validate if the downloaded file is what we expect
 file $BINARY_LOCAL_PATH | grep -q 'executable' || {
-    echo "The downloaded file is not a valid executable."
+    echo "The downloaded file is not a valid executable or could not be found."
     exit 1
 }
 
