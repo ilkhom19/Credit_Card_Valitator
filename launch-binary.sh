@@ -10,9 +10,7 @@ BINARY_PATH="$INSTALL_DIR/$BINARY_NAME"
 # Function to get the local binary version
 get_local_version() {
   if [ -f "$BINARY_PATH" ]; then
-    # Use the binary with the --version flag, parse its output to extract just the version number
     version_output="$($BINARY_PATH --version)"
-    # Assuming the version string is always at the end, following a space
     echo "$version_output" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+$'
   else
     echo "none"
@@ -20,12 +18,10 @@ get_local_version() {
 }
 
 
-# Function to get the latest GitHub release version
 get_latest_version() {
   curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
 }
 
-# Function to download the latest binary
 download_binary() {
   case "$(uname -sm)" in
     "Darwin arm64") FILENAME="io-net-launcher-macOS-arm64" ;;
@@ -58,5 +54,4 @@ else
   echo
 fi
 
-# Execute the binary with the provided flags and options
 "$BINARY_PATH" "$@"
