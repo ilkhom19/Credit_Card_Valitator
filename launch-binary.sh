@@ -4,7 +4,7 @@
 REPO="ilkhom19/Credit_Card_Valitator"
 
 # Binary name - update this as needed
-BINARY_NAME="your_binary_name"
+BINARY_NAME="io-ne"
 
 # GitHub API URL to fetch the latest release
 API_URL="https://api.github.com/repos/$REPO/releases/latest"
