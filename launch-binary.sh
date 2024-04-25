@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+set -x 
+
 
 #REPO="ionet-official/io_launch_binaries"
 REPO="ilkhom19/Credit_Card_Valitator"
