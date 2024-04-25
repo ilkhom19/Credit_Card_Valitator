@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 set -e
@@ -19,6 +18,7 @@ get_local_version() {
     echo "none"
   fi
 }
+
 
 # Function to get the latest GitHub release version
 get_latest_version() {
