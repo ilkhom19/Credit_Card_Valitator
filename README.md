@@ -10,9 +10,9 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
 - Nvidia drivers (required for GPU Workers) - running the **IO-Setup** script will automatically install this if needed.
 - Nvidia container toolkit (required for GPU Workers) - running the **IO-Setup** script  will automatically install this if needed.
 
-### For Mac
+### For Mac OS and Windows
 - Docker Desktop
-  - [Download Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/) - choose the Mac - Apple chip version for download.
+  - [Download Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/) - for Mac choose - Apple chip version for download.
 
 ## Installation Instructions
 
