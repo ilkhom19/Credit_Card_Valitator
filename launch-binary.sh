@@ -1,54 +1,61 @@
 #!/bin/bash
 
-# GitHub user/repo
+set -e
+
+# Repository details
 REPO="ilkhom19/Credit_Card_Valitator"
+INSTALL_DIR="/usr/local/bin"
+BINARY_NAME="io-net-launcher"
+BINARY_PATH="$INSTALL_DIR/$BINARY_NAME"
 
-# Binary name - update this as needed
-BINARY_NAME="io-ne"
-
-# GitHub API URL to fetch the latest release
-API_URL="https://api.github.com/repos/$REPO/releases/latest"
-
-# Install jq if not present (uncomment the next line if needed)
-# sudo apt-get install jq # on Debian/Ubuntu systems
-
-# Get the latest release data using curl and jq to extract the tag_name
-TAG_NAME=$(curl -s $API_URL | jq -r '.tag_name')
-
-# Check if we got a tag name
-if [ -z "$TAG_NAME" ] || [ "$TAG_NAME" == "null" ]; then
-  echo "Failed to fetch latest release tag."
-  exit 1
-fi
-
-# Construct the download URL using the tag name and binary name
-BINARY_URL="https://github.com/$REPO/releases/download/$TAG_NAME/$BINARY_NAME"
-
-# Define where to save the binary
-BINARY_LOCAL_PATH="/usr/local/bin/$BINARY_NAME"
-
-# Check if the binary already exists and delete it if it does
-if [ -f "$BINARY_LOCAL_PATH" ]; then
-  echo "Existing binary found. Deleting..."
-  rm "$BINARY_LOCAL_PATH"
-fi
-
-# Use curl to download the binary
-curl -L $BINARY_URL -o $BINARY_LOCAL_PATH
-
-# Check if the download was successful by inspecting the first few bytes of the file
-echo "File type and content check:"
-file $BINARY_LOCAL_PATH
-head $BINARY_LOCAL_PATH
-
-# Validate if the downloaded file is what we expect
-file $BINARY_LOCAL_PATH | grep -q 'executable' || {
-    echo "The downloaded file is not a valid executable or could not be found."
-    exit 1
+# Function to get the local binary version
+get_local_version() {
+  if [ -f "$BINARY_PATH" ]; then
+    version_output="$($BINARY_PATH --version)"
+    echo "$version_output" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+$'
+  else
+    echo "none"
+  fi
 }
 
-# Make the binary executable
-chmod +x $BINARY_LOCAL_PATH
+# Function to get the latest GitHub release version using jq for more reliable JSON parsing
+get_latest_version() {
+  curl -s "https://api.github.com/repos/$REPO/releases/latest" | jq -r '.tag_name'
+}
 
-# Execute the binary with all passed arguments
-$BINARY_LOCAL_PATH "$@"
+# Function to download the latest binary based on system architecture
+download_binary() {
+  case "$(uname -sm)" in
+    "Darwin arm64") FILENAME="$BINARY_NAME-macOS-arm64" ;;
+    "Linux x86_64") FILENAME="$BINARY_NAME-linux-amd64" ;;
+    *) echo "Unsupported architecture: $(uname -sm)" >&2; exit 1 ;;
+  esac
+
+  URL="https://github.com/$REPO/releases/download/$1/$FILENAME"
+  echo "Downloading $FILENAME version $1 from GitHub releases"
+  curl -sSLf "$URL" -o "$BINARY_PATH" || {
+    echo "Failed to download or write to $INSTALL_DIR; try with sudo" >&2
+    exit 1
+  }
+
+  chmod +x "$BINARY_PATH" || {
+    echo "Failed to set executable permission on $BINARY_PATH" >&2
+    exit 1
+  }
+
+  echo "$BINARY_NAME version $1 is successfully installed"
+}
+
+# Check existing version and update if not the latest
+local_version=$(get_local_version)
+latest_version=$(get_latest_version)
+
+if [ "$local_version" != "$latest_version" ]; then
+  echo "Local version ($local_version) is different from the latest version ($latest_version). Updating..."
+  download_binary "$latest_version"
+else
+  echo "No update needed. Local version ($local_version) is up-to-date."
+fi
+
+# Execute the binary with the provided flags and options
+"$BINARY_PATH" "$@"
