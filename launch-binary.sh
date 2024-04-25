@@ -18,9 +18,9 @@ get_local_version() {
   fi
 }
 
-# Function to get the latest GitHub release version using jq for more reliable JSON parsing
+# Function to get the latest GitHub release version
 get_latest_version() {
-  curl -s "https://api.github.com/repos/$REPO/releases/latest" | jq -r '.tag_name'
+  curl -s "https://api.github.com/repos/$REPO/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
 }
 
 # Function to download the latest binary based on system architecture
