@@ -33,18 +33,27 @@ download_binary() {
 
   URL="https://github.com/$REPO/releases/download/$1/$FILENAME"
   echo "Downloading $FILENAME version $1 from GitHub releases"
-  if ! curl -sSLf "$URL" -o "$BINARY_PATH"; then
+  curl -sSLf "$URL" -o "$BINARY_PATH" || {
     echo "Failed to download or write to $INSTALL_DIR; try with sudo" >&2
     exit 1
-  fi
+  }
 
-  if ! chmod +x "$BINARY_PATH"; then
+  chmod +x "$BINARY_PATH" || {
     echo "Failed to set executable permission on $BINARY_PATH" >&2
     exit 1
-  fi
+  }
 
   echo "$BINARY_NAME version $1 is successfully installed"
 }
+
+# Always remove the existing binary before checking for updates
+if [ -f "$BINARY_PATH" ]; then
+  echo "Removing existing binary..."
+  sudo rm "$BINARY_PATH" || {
+    echo "Failed to remove existing binary; please check your permissions or try manually" >&2
+    exit 1
+  }
+fi
 
 # Check existing version and update if not the latest
 local_version=$(get_local_version)
@@ -58,4 +67,5 @@ else
 fi
 
 # Execute the binary with the provided flags and options
+echo "Executing $BINARY_PATH with arguments $@"
 "$BINARY_PATH" "$@"
