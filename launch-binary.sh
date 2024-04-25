@@ -33,15 +33,15 @@ download_binary() {
 
   URL="https://github.com/$REPO/releases/download/$1/$FILENAME"
   echo "Downloading $FILENAME version $1 from GitHub releases"
-  curl -sSLf "$URL" -o "$BINARY_PATH" || {
+  if ! curl -sSLf "$URL" -o "$BINARY_PATH"; then
     echo "Failed to download or write to $INSTALL_DIR; try with sudo" >&2
     exit 1
-  }
+  fi
 
-  chmod +x "$BINARY_PATH" || {
+  if ! chmod +x "$BINARY_PATH"; then
     echo "Failed to set executable permission on $BINARY_PATH" >&2
     exit 1
-  }
+  fi
 
   echo "$BINARY_NAME version $1 is successfully installed"
 }
