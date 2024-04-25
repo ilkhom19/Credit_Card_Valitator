@@ -27,6 +27,12 @@ BINARY_URL="https://github.com/$REPO/releases/download/$TAG_NAME/$BINARY_NAME"
 # Define where to save the binary
 BINARY_LOCAL_PATH="/usr/local/bin/$BINARY_NAME"
 
+# Check if the binary already exists and delete it if it does
+if [ -f "$BINARY_LOCAL_PATH" ]; then
+  echo "Existing binary found. Deleting..."
+  rm "$BINARY_LOCAL_PATH"
+fi
+
 # Use curl to download the binary
 curl -L $BINARY_URL -o $BINARY_LOCAL_PATH
 
